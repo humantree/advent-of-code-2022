@@ -1,12 +1,5 @@
-import { readFileSync } from 'fs';
-import path from 'path';
-import url from 'url';
-
-const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const inputPath = `${__dirname}/../input/day-1.txt`;
-const input = readFileSync(inputPath, 'utf8');
+import getInputFile from './helpers/get-input-file.js';
+const input = getInputFile(1);
 
 const elves: number[] = [];
 let currentElfIndex = 0;
