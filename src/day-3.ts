@@ -11,6 +11,10 @@ const getPriority = (letter: string) => {
 
 let cumulativePriority = 0;
 
+const groups = [];
+let outerGroupCounter = 0;
+let innerGroupCounter = 0;
+
 input.split('\n').forEach((line) => {
   if (!line.length) return;
 
@@ -21,6 +25,23 @@ input.split('\n').forEach((line) => {
   const priorities = shared.map(getPriority);
   const totalPriority = priorities.reduce((runningTotal, priority) => runningTotal + priority, 0);
   cumulativePriority += totalPriority;
+
+  if (!groups[outerGroupCounter]) groups[outerGroupCounter] = [];
+  groups[outerGroupCounter].push([...new Set(line)]);
+  innerGroupCounter++;
+
+  if (innerGroupCounter === 3) {
+    innerGroupCounter = 0;
+    outerGroupCounter++;
+  }
 });
 
-console.log(`The total priority of all items that appear in both compartments of each rucksack is ${cumulativePriority}`);
+console.log(`The total priority of all items that appear in both compartments of each rucksack is ${cumulativePriority}.`);
+
+const badges = groups.map((group) => group[0]
+  .find((item) => group[1].includes(item) && group[2].includes(item)));
+
+const badgePriorities = badges.map(getPriority);
+const totalBadgePriority = badgePriorities.reduce((runningTotal, priority) => runningTotal + priority, 0);
+
+console.log(`The total priority of all badge item types is ${totalBadgePriority}.`)
