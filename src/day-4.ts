@@ -8,6 +8,7 @@ const enumerateSections = (start: number, end: number) => {
 };
 
 let fullyOverlappingCount = 0;
+let anyOverlappingCount = 0;
 
 input.split('\n').forEach((line) => {
   if (!line.length) return;
@@ -24,6 +25,10 @@ input.split('\n').forEach((line) => {
 
   const fullyOverlapping = primaryElf.find((section) => !secondaryElf.includes(section)) === undefined;
   if (fullyOverlapping) fullyOverlappingCount++;
+
+  const anyOverlapping = primaryElf.find((section) => secondaryElf.includes(section)) !== undefined;
+  if (anyOverlapping) anyOverlappingCount++;
 });
 
 console.log(`The number of assignment pairs where one range fully contains the other is ${fullyOverlappingCount}.`);
+console.log(`The number of assignment pairs where one range overlaps at all with the other is ${anyOverlappingCount}.`);
