@@ -15,9 +15,7 @@ const groups = [];
 let outerGroupCounter = 0;
 let innerGroupCounter = 0;
 
-input.split('\n').forEach((line) => {
-  if (!line.length) return;
-
+input.forEach((line) => {
   const midpoint = line.length / 2;
   const compartmentOne = [...new Set(line.substring(0, midpoint))];
   const compartmentTwo = [...new Set(line.substring(midpoint))];

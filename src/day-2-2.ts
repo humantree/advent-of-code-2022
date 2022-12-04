@@ -65,9 +65,7 @@ class HandShape {
 
 let totalScore = 0;
 
-input.split('\n').forEach((line) => {
-  if (!line.length) return;
-
+input.forEach((line) => {
   const codes = line.split(' ');
   const opponent = new HandShape(codes[0]);
   const result = new MatchResult(codes[1]);

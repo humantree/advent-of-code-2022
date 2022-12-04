@@ -41,9 +41,7 @@ class HandShape {
 
 let totalScore = 0;
 
-input.split('\n').forEach((line) => {
-  if (!line.length) return;
-
+input.forEach((line) => {
   const [opponent, player] = line.split(' ').map((key) => new HandShape(key));
   const result = player.challenge(opponent);
   totalScore += result + player.value;

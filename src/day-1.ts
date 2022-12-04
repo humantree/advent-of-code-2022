@@ -1,10 +1,10 @@
 import getInputFile from './helpers/get-input-file.js';
-const input = getInputFile(1);
+const input = getInputFile(1, false);
 
 const elves: number[] = [];
 let currentElfIndex = 0;
 
-input.split('\n').forEach((line) => {
+input.forEach((line) => {
   if (!line.length) return currentElfIndex++;
   if (!elves[currentElfIndex]) elves[currentElfIndex] = 0;
   elves[currentElfIndex] += +line;

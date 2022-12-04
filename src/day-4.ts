@@ -10,9 +10,7 @@ const enumerateSections = (start: number, end: number) => {
 let fullyOverlappingCount = 0;
 let anyOverlappingCount = 0;
 
-input.split('\n').forEach((line) => {
-  if (!line.length) return;
-
+input.forEach((line) => {
   const [firstElf, secondElf] = line
     .split(',')
     .map((sections) => {
