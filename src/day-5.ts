@@ -1,8 +1,10 @@
 import getInputFile from './helpers/get-input-file.js';
 const input = getInputFile(5, false);
 
+const CRATE_MOVER_9001 = true;
+
 let stackCount: number;
-const stacks = <string[][]>[];
+const stacks: string[][] = [];
 let buildingStacks = true;
 
 input.forEach((line, index) => {
@@ -31,11 +33,17 @@ input.forEach((line, index) => {
   }
 
   const [numberOfCrates, from, to] = line.match(/\d+/g);
-  for (let i = 0; i < +numberOfCrates; i++) {
-    const fromStack = +from - 1;
-    const toStack = +to - 1;
-    const crate = stacks[fromStack].pop();
-    stacks[toStack].push(crate);
+  const fromStack = +from - 1;
+  const toStack = +to - 1;
+
+  if (CRATE_MOVER_9001) {
+    const crates = stacks[fromStack].splice(+numberOfCrates * -1);
+    stacks[toStack].push(...crates);
+  } else {
+    for (let i = 0; i < +numberOfCrates; i++) {
+      const crate = stacks[fromStack].pop();
+      stacks[toStack].push(crate);
+    }
   }
 });
 
