@@ -1,15 +1,19 @@
 import getInputFile from './helpers/get-input-file.js';
 const input = getInputFile(6);
 
-const MARKER_SIZE = 4;
-
 const datastream = input[0];
-let markerPosition = 0;
 
-while (true) {
-  const marker = datastream.substring(markerPosition, markerPosition + MARKER_SIZE);
-  if (new Set([...marker]).size === MARKER_SIZE) break;
-  markerPosition++;
+const findFirstMarkerOfSize = (markerSize: number) => {
+  let markerPosition = 0;
+
+  while (true) {
+    const marker = datastream.substring(markerPosition, markerPosition + markerSize);
+    if (new Set([...marker]).size === markerSize) break;
+    markerPosition++;
+  }
+
+  return markerPosition + markerSize;
 }
 
-console.log(`The first marker is after character ${markerPosition + MARKER_SIZE}.`);
+console.log(`The first start-of-packet marker is detected after character ${findFirstMarkerOfSize(4)}.`);
+console.log(`The first start-of-message marker is detected after character ${findFirstMarkerOfSize(14)}.`);
