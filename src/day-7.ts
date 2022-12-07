@@ -1,6 +1,9 @@
 import getInputFile from './helpers/get-input-file.js';
 const input = getInputFile(7);
 
+const TOTAL_DISK_SPACE = 70000000;
+const REQUIRED_DISK_SPACE = 30000000;
+
 type File = {
   name: string;
   size: number;
@@ -63,14 +66,14 @@ input.forEach((line) => {
   createFile(name, +dirOrSize);
 });
 
-const directorySizes = allDirectories.map((directory) => ({
-  name: directory.name,
-  size: directory.sizeOfContents(),
-}));
-
-const smallDirectories = directorySizes
-  .filter((directory) => directory.size <= 100000);
-const totalSize = smallDirectories
-  .reduce((runningTotal, directory) => runningTotal + directory.size, 0);
+const directorySizes = allDirectories.map((directory) => directory.sizeOfContents());
+const smallDirectories = directorySizes.filter((size) => size <= 100000);
+const totalSize = smallDirectories.reduce((runningTotal, size) => runningTotal + size, 0);
 
 console.log(`The total size of all directories with a size of 100000 at most is ${totalSize}`)
+
+const minimumDirectorySize = REQUIRED_DISK_SPACE - (TOTAL_DISK_SPACE - root.sizeOfContents());
+const suitableDirectories = directorySizes.filter((size) => size >= minimumDirectorySize);
+const smallestSuitableDirectory = suitableDirectories.sort((a, b) => a - b)[0];
+
+console.log(`The size of the smallest suitable directory for deletion is ${smallestSuitableDirectory}`);
