@@ -1,6 +1,8 @@
 import getInputFile from './helpers/get-input-file.js';
 const input = getInputFile(9);
 
+const ROPE_LENGTH = 10;
+
 type Direction = 'U' | 'D' | 'L' | 'R';
 
 type Knot = {
@@ -20,9 +22,11 @@ const motions = input.map<Motion>((line) => {
   return { direction, distance };
 });
 
-const head: Knot = { x: 0, y: 0 };
-const tail: Knot = { x: 0, y: 0 };
+const rope: Knot[] = [];
+for (let i = 0; i < ROPE_LENGTH; i++) rope.push({ x: 0, y: 0});
 
+const head = rope[0];
+const tail = rope[rope.length - 1];
 const tailLog: Set<string> = new Set();
 
 const singleStep = (number: number) => {
@@ -38,22 +42,28 @@ const followMotion = (motion: Motion) => {
   for (let i = 0; i < motion.distance; i++) {
     head.x += x;
     head.y += y;
-    updateTail();
+    updateRope();
     updateTailLog();
   }
 };
 
-const updateTail = () => {
-  const xDiff = head.x - tail.x;
-  const yDiff = head.y - tail.y;
+const updateRope = () => {
+  for (let i = 1; i < rope.length; i++) {
+    updateKnot(rope[i], rope[i - 1]);
+  }
+};
+
+const updateKnot = (knot: Knot, leader: Knot) => {
+  const xDiff = leader.x - knot.x;
+  const yDiff = leader.y - knot.y;
 
   if (Math.abs(xDiff) <= 1 && Math.abs(yDiff) <= 1) return;
 
-  if (xDiff === 0) return tail.y += singleStep(yDiff);
-  if (yDiff === 0) return tail.x += singleStep(xDiff);
+  if (xDiff === 0) return knot.y += singleStep(yDiff);
+  if (yDiff === 0) return knot.x += singleStep(xDiff);
 
-  tail.x += singleStep(xDiff);
-  tail.y += singleStep(yDiff);
+  knot.x += singleStep(xDiff);
+  knot.y += singleStep(yDiff);
 };
 
 const updateTailLog = () => tailLog.add(JSON.stringify(tail));
