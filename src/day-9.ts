@@ -23,7 +23,7 @@ const motions = input.map<Motion>((line) => {
 });
 
 const rope: Knot[] = [];
-for (let i = 0; i < ROPE_LENGTH; i++) rope.push({ x: 0, y: 0});
+for (let i = 0; i < ROPE_LENGTH; i++) rope.push({ x: 0, y: 0 });
 
 const head = rope[0];
 const tail = rope[rope.length - 1];
@@ -33,11 +33,11 @@ const singleStep = (number: number) => {
   if (number > 0) return 1;
   if (number < 0) return -1;
   return 0;
-}
+};
 
 const followMotion = (motion: Motion) => {
-  const x = motion.direction === 'L' ? -1 : (motion.direction === 'R' ? 1 : 0);
-  const y = motion.direction === 'D' ? -1 : (motion.direction === 'U' ? 1 : 0);
+  const x = motion.direction === 'L' ? -1 : motion.direction === 'R' ? 1 : 0;
+  const y = motion.direction === 'D' ? -1 : motion.direction === 'U' ? 1 : 0;
 
   for (let i = 0; i < motion.distance; i++) {
     head.x += x;
@@ -59,8 +59,8 @@ const updateKnot = (knot: Knot, leader: Knot) => {
 
   if (Math.abs(xDiff) <= 1 && Math.abs(yDiff) <= 1) return;
 
-  if (xDiff === 0) return knot.y += singleStep(yDiff);
-  if (yDiff === 0) return knot.x += singleStep(xDiff);
+  if (xDiff === 0) return (knot.y += singleStep(yDiff));
+  if (yDiff === 0) return (knot.x += singleStep(xDiff));
 
   knot.x += singleStep(xDiff);
   knot.y += singleStep(yDiff);
@@ -70,4 +70,6 @@ const updateTailLog = () => tailLog.add(JSON.stringify(tail));
 
 motions.forEach(followMotion);
 
-console.log(`The tail of the rope vists ${tailLog.size} positions at least once.`);
+console.log(
+  `The tail of the rope vists ${tailLog.size} positions at least once.`
+);

@@ -23,8 +23,8 @@ class Directory {
   }
 
   sizeOfContents() {
-    const filesSize = this.files.reduce((runningTotal, file) => runningTotal + file.size, 0);
-    const childrenSize =  this.childDirectories
+    const filesSize = this.files.reduce((acc, file) => acc + file.size, 0);
+    const childrenSize = this.childDirectories
       .map((child) => child.sizeOfContents())
       .reduce((runningTotal, size) => runningTotal + size, 0);
     return filesSize + childrenSize;
@@ -36,11 +36,13 @@ const allDirectories = [root];
 let currentDirectory: Directory;
 
 const changeDirectory = (directory: string) => {
-  if (directory === '/') return currentDirectory = root;
-  if (directory === '..') return currentDirectory = currentDirectory.parentDirectory;
+  if (directory === '/') return (currentDirectory = root);
+  if (directory === '..')
+    return (currentDirectory = currentDirectory.parentDirectory);
 
-  currentDirectory = currentDirectory.childDirectories
-    .find((child) => child.name === directory);
+  currentDirectory = currentDirectory.childDirectories.find(
+    (child) => child.name === directory
+  );
 };
 
 const createDirectory = (name: string) => {
@@ -66,14 +68,19 @@ input.forEach((line) => {
   createFile(name, +dirOrSize);
 });
 
-const directorySizes = allDirectories.map((directory) => directory.sizeOfContents());
+const directorySizes = allDirectories.map((dir) => dir.sizeOfContents());
 const smallDirectories = directorySizes.filter((size) => size <= 100000);
-const totalSize = smallDirectories.reduce((runningTotal, size) => runningTotal + size, 0);
+const totalSize = smallDirectories.reduce((acc, size) => acc + size, 0);
 
-console.log(`The total size of all directories with a size of 100000 at most is ${totalSize}`)
+console.log(
+  `The total size of all directories with a size of 100000 at most is ${totalSize}`
+);
 
-const minimumDirectorySize = REQUIRED_DISK_SPACE - (TOTAL_DISK_SPACE - root.sizeOfContents());
-const suitableDirectories = directorySizes.filter((size) => size >= minimumDirectorySize);
+const availableSpace = TOTAL_DISK_SPACE - root.sizeOfContents();
+const minDirSize = REQUIRED_DISK_SPACE - availableSpace;
+const suitableDirectories = directorySizes.filter((size) => size >= minDirSize);
 const smallestSuitableDirectory = suitableDirectories.sort((a, b) => a - b)[0];
 
-console.log(`The size of the smallest suitable directory for deletion is ${smallestSuitableDirectory}`);
+console.log(
+  `The size of the smallest suitable directory for deletion is ${smallestSuitableDirectory}`
+);

@@ -12,7 +12,7 @@ type Monkey = {
   testTrueRecipient: number;
 
   worryOperation: (worry: number) => number;
-}
+};
 
 const monkeys: Monkey[] = [];
 
@@ -31,11 +31,15 @@ const worryOperationBuilder = (operation: string) => {
 input.forEach((line, i) => {
   if (!line.startsWith('Monkey')) return;
 
-  const items = input[i + 1].split(':')[1].split(',').map((value) => +value);
+  const items = input[i + 1]
+    .split(':')[1]
+    .split(',')
+    .map((value) => +value);
+
   const worryOperation = worryOperationBuilder(input[i + 2].split('= ')[1]);
   const testDivisor = +input[i + 3].substring(21);
-  const testTrueRecipient = +input[i + 4].substring(29)
-  const testFalseRecipient = +input[i + 5].substring(30)
+  const testTrueRecipient = +input[i + 4].substring(29);
+  const testFalseRecipient = +input[i + 5].substring(30);
 
   const monkey: Monkey = {
     inspectionCount: 0,
@@ -43,7 +47,7 @@ input.forEach((line, i) => {
     testDivisor,
     testFalseRecipient,
     testTrueRecipient,
-    worryOperation
+    worryOperation,
   };
 
   monkeys.push(monkey);
@@ -51,7 +55,7 @@ input.forEach((line, i) => {
 
 const commonDivisor = monkeys
   .map((monkey) => monkey.testDivisor)
-  .reduce((accumulator, divisor) => accumulator *= divisor);
+  .reduce((acc, divisor) => acc * divisor);
 
 for (let i = 0; i < ROUNDS; i++) {
   monkeys.forEach((monkey) => {
@@ -77,5 +81,7 @@ const inspectionCounts = monkeys
   .sort((a, b) => b.inspectionCount - a.inspectionCount)
   .map((monkey) => monkey.inspectionCount);
 
-const monkeyBusiness = inspectionCounts[0] * inspectionCounts[1]; 
-console.log(`The level of monkey business after ${ROUNDS} rounds is ${monkeyBusiness}`);
+const monkeyBusiness = inspectionCounts[0] * inspectionCounts[1];
+console.log(
+  `The level of monkey business after ${ROUNDS} rounds is ${monkeyBusiness}`
+);

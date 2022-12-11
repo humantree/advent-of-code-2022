@@ -6,7 +6,7 @@ const LINE_WIDTH = 40;
 let x = 1;
 let line = 0;
 let cycleCount = 0;
-let signalStrengths: number[] = [];
+const signalStrengths: number[] = [];
 
 const add = (value: number) => {
   tick();
@@ -29,18 +29,16 @@ const tick = () => {
     process.stdout.write('\n');
     line++;
   }
-}
+};
 
 input.forEach((instruction) => {
   if (instruction === 'noop') return noop();
 
   if (instruction.startsWith('addx')) {
-    const [_, value] = instruction.split(' ');
+    const value = instruction.split(' ')[1];
     add(+value);
   }
 });
 
-const totalSignalStrengths = signalStrengths.reduce(
-  (runningTotal, signalStrength) => runningTotal += signalStrength, 0);
-
-console.log(`\nThe total of the signal strengths (20, 60, 100...) is ${totalSignalStrengths}`);
+const total = signalStrengths.reduce((acc, strength) => acc + strength);
+console.log(`\nThe total of the signal strengths (20, 60, 100...) is ${total}`);

@@ -1,18 +1,12 @@
 import getInputFile from './helpers/get-input-file.js';
 const input = getInputFile(8);
 
-const grid = input.map((line) => line
-  .split('')
-  .map((number) => +number));
-
+const grid = input.map((line) => line.split('').map((number) => +number));
 const xMax = grid.length;
 const yMax = grid[0].length;
 
-const isDirectionVisible = (trees: number[], maxHeight: number) => {
-  return trees.reduce(
-    (visible, height) => visible && height < maxHeight,
-    true);
-};
+const isDirectionVisible = (trees: number[], maxHeight: number) =>
+  trees.reduce((visible, height) => visible && height < maxHeight, true);
 
 const getColumn = (x: number) => grid.map((row) => row[x]);
 const getUpTrees = (x: number, y: number) => getColumn(x).slice(0, y).reverse();
@@ -21,8 +15,7 @@ const getLeftTrees = (x: number, y: number) => grid[y].slice(0, x).reverse();
 const getRightTrees = (x: number, y: number) => grid[y].slice(x + 1);
 
 const isTreeVisible = (x: number, y: number) => {
-  if (x === 0 || x === xMax ||
-      y === 0 || y === yMax) return true;
+  if (x === 0 || x === xMax || y === 0 || y === yMax) return true;
 
   const tree = grid[y][x];
 
@@ -44,14 +37,16 @@ const isTreeVisible = (x: number, y: number) => {
 const getDirectionScore = (trees: number[], maxHeight: number) => {
   const firstBlocker = trees.findIndex((tree) => tree >= maxHeight);
   return firstBlocker === -1 ? trees.length : firstBlocker + 1;
-}
+};
 
 const getScenicScore = (x: number, y: number) => {
   const tree = grid[y][x];
-  return getDirectionScore(getUpTrees(x, y), tree) *
+  return (
+    getDirectionScore(getUpTrees(x, y), tree) *
     getDirectionScore(getDownTrees(x, y), tree) *
     getDirectionScore(getLeftTrees(x, y), tree) *
-    getDirectionScore(getRightTrees(x, y), tree);
+    getDirectionScore(getRightTrees(x, y), tree)
+  );
 };
 
 let visibleCount = 0;
