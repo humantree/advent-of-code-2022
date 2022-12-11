@@ -12,7 +12,12 @@ input.forEach((line) => {
 
 const sortedElves = elves.sort((a, b) => b - a);
 const topThree = sortedElves.slice(0, 3);
-const totalCalories = topThree.reduce((runningTotal, elf) => runningTotal + elf, 0);
+const totalCalories = topThree.reduce((acc, elf) => acc + elf);
 
-console.log(`The elf carrying the most calories is carrying ${sortedElves[0]} calories`);
-console.log(`The total calories carried by the top three elves is ${totalCalories} calories`);
+console.log(
+  `The elf carrying the most calories is carrying ${sortedElves[0]} calories`
+);
+
+console.log(
+  `The total calories carried by the top three elves is ${totalCalories} calories`
+);

@@ -53,9 +53,13 @@ class HandShape {
 
   challenge(opponent: HandShape) {
     if (this.shape === opponent.shape) return new MatchResult('Draw');
-    if ((this.shape === 'Rock' && opponent.shape === 'Scissors') ||
-        (this.shape === 'Scissors' && opponent.shape === 'Paper') ||
-        (this.shape === 'Paper' && opponent.shape === 'Rock')) return new MatchResult('Victory');
+    if (
+      (this.shape === 'Rock' && opponent.shape === 'Scissors') ||
+      (this.shape === 'Scissors' && opponent.shape === 'Paper') ||
+      (this.shape === 'Paper' && opponent.shape === 'Rock')
+    )
+      return new MatchResult('Victory');
+
     return new MatchResult('Loss');
   }
 
@@ -64,13 +68,13 @@ class HandShape {
 
     if (result.result === 'Victory') {
       if (this.shape === 'Rock') return new HandShape('Paper');
-      if (this.shape === 'Paper') return new HandShape('Scissors')
+      if (this.shape === 'Paper') return new HandShape('Scissors');
       if (this.shape === 'Scissors') return new HandShape('Rock');
     }
 
     if (result.result === 'Loss') {
       if (this.shape === 'Rock') return new HandShape('Scissors');
-      if (this.shape === 'Paper') return new HandShape('Rock')
+      if (this.shape === 'Paper') return new HandShape('Rock');
       if (this.shape === 'Scissors') return new HandShape('Paper');
     }
   }

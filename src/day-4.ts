@@ -11,22 +11,27 @@ let fullyOverlappingCount = 0;
 let anyOverlappingCount = 0;
 
 input.forEach((line) => {
-  const [firstElf, secondElf] = line
-    .split(',')
-    .map((sections) => {
-      const [start, end] = sections.split('-');
-      return enumerateSections(+start, +end);
-    });
+  const [elfA, elfB] = line.split(',').map((sections) => {
+    const [start, end] = sections.split('-');
+    return enumerateSections(+start, +end);
+  });
 
-  const primaryElf = firstElf.length < secondElf.length ? firstElf : secondElf;
-  const secondaryElf = firstElf.length < secondElf.length ? secondElf : firstElf;
+  const primaryElf = elfA.length < elfB.length ? elfA : elfB;
+  const secondaryElf = elfA.length < elfB.length ? elfB : elfA;
 
-  const fullyOverlapping = primaryElf.find((section) => !secondaryElf.includes(section)) === undefined;
+  const fullyOverlapping =
+    primaryElf.find((section) => !secondaryElf.includes(section)) === undefined;
   if (fullyOverlapping) fullyOverlappingCount++;
 
-  const anyOverlapping = primaryElf.find((section) => secondaryElf.includes(section)) !== undefined;
+  const anyOverlapping =
+    primaryElf.find((section) => secondaryElf.includes(section)) !== undefined;
   if (anyOverlapping) anyOverlappingCount++;
 });
 
-console.log(`The number of assignment pairs where one range fully contains the other is ${fullyOverlappingCount}.`);
-console.log(`The number of assignment pairs where one range overlaps at all with the other is ${anyOverlappingCount}.`);
+console.log(
+  `The number of assignment pairs where one range fully contains the other is ${fullyOverlappingCount}.`
+);
+
+console.log(
+  `The number of assignment pairs where one range overlaps at all with the other is ${anyOverlappingCount}.`
+);

@@ -26,7 +26,7 @@ input.forEach((line, index) => {
       if (line.charAt(0).match(/[A-Z]/))
         stacks[stackCounter].unshift(line.charAt(0));
       stackCounter++;
-      line = line.substring(4)
+      line = line.substring(4);
     }
 
     return;
