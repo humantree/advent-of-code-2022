@@ -1,7 +1,8 @@
 import getInputFile from './helpers/get-input-file.js';
 const input = getInputFile(11);
 
-const ROUNDS = 20;
+const ROUNDS = 10000;
+const WORRY_ABOUT_DAMAGE = false;
 
 type Monkey = {
   inspectionCount: number;
@@ -48,12 +49,18 @@ input.forEach((line, i) => {
   monkeys.push(monkey);
 });
 
+const commonDivisor = monkeys
+  .map((monkey) => monkey.testDivisor)
+  .reduce((accumulator, divisor) => accumulator *= divisor);
+
 for (let i = 0; i < ROUNDS; i++) {
   monkeys.forEach((monkey) => {
     while (monkey.items.length) {
       let item = monkey.items.shift();
       item = monkey.worryOperation(item);
-      item = Math.floor(item / 3);
+
+      if (WORRY_ABOUT_DAMAGE) item = Math.floor(item / 3);
+      else item = item % commonDivisor;
 
       if (item % monkey.testDivisor === 0) {
         monkeys[monkey.testTrueRecipient].items.push(item);
