@@ -6,7 +6,7 @@ const LINE_WIDTH = 40;
 let x = 1;
 let line = 0;
 let cycleCount = 0;
-let signalStrengths = [];
+let signalStrengths: number[] = [];
 
 const add = (value: number) => {
   tick();
