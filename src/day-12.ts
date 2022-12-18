@@ -4,7 +4,7 @@ const input = getInputFile(12);
 import chalk from 'chalk';
 
 const ENABLE_DRAWING = false;
-const DRAWING_REFRESH_RATE = 10;
+const DRAWING_REFRESH_RATE = 100;
 
 type Coordinate = {
   x: number;
@@ -24,6 +24,7 @@ type Node = {
 
 let startingPosition: Coordinate;
 let bestSignal: Coordinate;
+const lowestPoints: Coordinate[] = [];
 
 const mapTileFromLetter = (letter: string, label?: string | undefined) => ({
   height: letter.charCodeAt(0) - 96,
@@ -33,6 +34,10 @@ const mapTileFromLetter = (letter: string, label?: string | undefined) => ({
 
 const map = input.map<MapTile[]>((line, y) =>
   line.split('').map((letter, x) => {
+    if (letter === 'S' || letter === 'a') {
+      lowestPoints.push({ x, y });
+    }
+
     if (letter === 'S') {
       startingPosition = { x, y };
       return mapTileFromLetter('a', 'S');
@@ -66,7 +71,16 @@ const delay = (timeoutMS: number) => {
   return new Promise((resolve) => setTimeout(resolve, timeoutMS));
 };
 
-const searchMap = async () => {
+const resetMap = () => {
+  for (let y = 0; y < map.length; y++) {
+    const row = map[y];
+    for (let x = 0; x < row.length; x++) {
+      map[y][x].visited = false;
+    }
+  }
+};
+
+const searchMap = async (startingPosition: Coordinate) => {
   const queue: Array<Node> = [{ coordinate: startingPosition, cost: 0 }];
   let finalCost;
 
@@ -94,7 +108,7 @@ const searchMap = async () => {
     }
   };
 
-  while (!finalCost) {
+  while (queue.length && !finalCost) {
     const node = queue.shift();
     await processNode(node);
   }
@@ -117,5 +131,18 @@ const printMap = (currentCost: number) => {
   console.log(`\nSteps: ${currentCost}`);
 };
 
-const cost = await searchMap();
-console.log(`The path was reached in ${cost} steps`);
+const cost = await searchMap(startingPosition);
+console.log(
+  `The fewest steps required to get to the goal from the starting location is ${cost}`
+);
+
+let lowestCost = Infinity;
+for (const lowestPoint of lowestPoints) {
+  resetMap();
+  const cost = await searchMap(lowestPoint);
+  if (cost < lowestCost) lowestCost = cost;
+}
+
+console.log(
+  `The fewest steps required to get to the goal from any square with low elevation is ${lowestCost}`
+);
